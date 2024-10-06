@@ -8,8 +8,6 @@ import random
 import requests
 import retrying
 from sklearn.svm import SVR
-from sklearn.model_selection import GridSearchCV, train_test_split
-from sklearn.metrics import mean_squared_error
 #from statsmodels.tsa.arima.model import ARIMA
 #from sklearn.svm import SVC
 
