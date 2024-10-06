@@ -8,6 +8,8 @@ import random
 import requests
 import retrying
 from sklearn.svm import SVR
+from sklearn.model_selection import GridSearchCV, train_test_split
+from sklearn.metrics import mean_squared_error
 #from statsmodels.tsa.arima.model import ARIMA
 #from sklearn.svm import SVC
 
@@ -148,21 +150,49 @@ def train_model(token):
     else: 
         df = price_data.resample('10T').mean()
 
-    # Prepare data for Linear Regression
-    df = df.dropna()  # Loại bỏ các giá trị NaN (nếu có)
-    X = np.array(range(len(df))).reshape(-1, 1)  # Sử dụng chỉ số thời gian làm đặc trưng
+    # Prepare data for SVR
+    df = df.dropna()  # Remove NaN values
+    X = np.array(range(len(df))).reshape(-1, 1)  # Use time index as feature
     y = df['close'].values  # Target: closing prices
     
-    #model = SVR(kernel='poly', degree=3)
-    model = SVR(kernel="rbf", C=100, gamma=0.1, epsilon=0.1)
-    model.fit(X, y)
-
-    next_time_index = np.array([[len(df)]])  # Giá trị thời gian tiếp theo
-    predicted_price = model.predict(next_time_index)[0]  # Dự đoán giá
+    # Split the data
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     
-    #price_predict = predicted_price
+    # Define the parameter grid for Grid Search
+    param_grid = {
+        'kernel': ['linear', 'poly', 'rbf', 'sigmoid'],
+        'C': [1, 10, 100, 1000],
+        'gamma': [0.01, 0.1, 1, 10],
+        'epsilon': [0.01, 0.1, 0.5, 1]
+    }
+    
+    # Initialize the SVR model
+    svr = SVR()
+    
+    # Perform Grid Search with cross-validation
+    grid_search = GridSearchCV(estimator=svr, param_grid=param_grid, cv=5, scoring='neg_mean_squared_error')
+    grid_search.fit(X_train, y_train)
+    
+    # Get the best parameters
+    best_params = grid_search.best_params_
+    print(f"Best parameters: {best_params}")
+    
+    # Train the model with the best parameters
+    best_model = SVR(kernel=best_params['kernel'], C=best_params['C'], gamma=best_params['gamma'], epsilon=best_params['epsilon'])
+    best_model.fit(X_train, y_train)
+    
+    # Make predictions
+    y_pred = best_model.predict(X_test)
+    
+    # Evaluate the model
+    mse = mean_squared_error(y_test, y_pred)
+    print(f'Mean Squared Error (SVR): {mse:.2f}')
+    
+    # Predict the next price
+    next_time_index = np.array([[len(df)]])  # Next time index
+    predicted_price = best_model.predict(next_time_index)[0]  # Predict price
+    
     forecast_price[token] = predicted_price
-        
     print(f"Forecasted price for {token}: {forecast_price[token]}")
     
 
