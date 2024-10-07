@@ -2,7 +2,8 @@ import json
 from flask import Flask, Response
 from model import download_data, format_data, train_model
 from model import forecast_price
-
+import requests
+import random
 app = Flask(__name__)
 
 def update_data():
