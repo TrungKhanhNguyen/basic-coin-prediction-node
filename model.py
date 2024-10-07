@@ -2,14 +2,11 @@ import os
 import pandas as pd
 from datetime import datetime, timedelta
 import numpy as np
-#from sklearn import linear_model
+from sklearn import linear_model
 from config import data_base_path
 import random
 import requests
 import retrying
-from sklearn.svm import SVR
-#from statsmodels.tsa.arima.model import ARIMA
-#from sklearn.svm import SVC
 
 forecast_price = {}
 
@@ -153,9 +150,8 @@ def train_model(token):
     X = np.array(range(len(df))).reshape(-1, 1)  # Sử dụng chỉ số thời gian làm đặc trưng
     y = df['close'].values  # Target: closing prices
     
-    #model = SVR(kernel='poly', degree=3)
-    model = SVR(kernel="rbf", C=100, gamma=0.1, epsilon=0.1)
-    model.fit(X, y)
+    model = LinearRegression()
+    model.fit(X, y)  # Huấn luyện mô hình
 
     next_time_index = np.array([[len(df)]])  # Giá trị thời gian tiếp theo
     predicted_price = model.predict(next_time_index)[0]  # Dự đoán giá
