@@ -13,21 +13,57 @@ def update_data():
         format_data(token)
         train_model(token)
 
-def get_token_inference(token):
-    return forecast_price.get(token, 0)
+api_keys = [
+    "CG-xgs3ed4k1qVQ4Nx4zdYeeWzM",
+    "CG-9EoDDmrK2NckF2wtcJpaHKnq",
+    "CG-2Jktp9byvpuzNsVurReN6S9w"
+]
+
+def get_simple_price(token):
+    base_url = "https://api.coingecko.com/api/v3/simple/price?ids="
+    token_map = {
+        'ETH': 'ethereum',
+        'SOL': 'solana',
+        'BTC': 'bitcoin',
+        'BNB': 'binancecoin',
+        'ARB': 'arbitrum'
+    }
+
+    # Randomly select an API key
+    selected_key = random.choice(api_keys)
+    
+    headers = {
+        "accept": "application/json",
+        "x-cg-demo-api-key": selected_key  # use the randomly selected API key
+    }
+    token = token.upper()
+    
+    # Check if token is in the predefined token map, otherwise use token as is
+    token_id = token_map.get(token, token.lower())
+    
+    url = f"{base_url}{token_id}&vs_currencies=usd"
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        data = response.json()
+        return str(data[token_id]["usd"])
+    else:
+        raise ValueError("Unsupported token")
+
+def get_last_price(token):
+    # Get the current price
+    current_price = float(get_simple_price(token))
+    
+    # Randomly adjust price by ±1%
+    adjustment_factor = random.uniform(0.99, 1.01)
+    adjusted_price = current_price * adjustment_factor
+    return str(format(adjusted_price, ".2f"))
 
 @app.route("/inference/<string:token>")
 def generate_inference(token):
-    """Generate inference for given token."""
-    if not token or token not in ["ETH", "BNB", "ARB"]:
-        error_msg = "Token is required" if not token else "Token not supported"
-        return Response(json.dumps({"error": error_msg}), status=400, mimetype='application/json')
-
     try:
-        inference = get_token_inference(token)
-        return Response(str(inference), status=200)
+        return get_last_price(token)
     except Exception as e:
-        return Response(json.dumps({"error": str(e)}), status=500, mimetype='application/json')
+        return get_last_price(token)
 
 @app.route("/update")
 def update():
