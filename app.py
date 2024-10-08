@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 def update_data():
     """Download price data, format data and train model."""
-    tokens = ["ETH","BNB","ARB"]
+    tokens = ["ETH","BTC","SOL","BNB","ARB"]
     for token in tokens:
         download_data(token)
         format_data(token)
