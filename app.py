@@ -17,7 +17,10 @@ def update_data():
 api_keys = [
     "CG-xgs3ed4k1qVQ4Nx4zdYeeWzM",
     "CG-9EoDDmrK2NckF2wtcJpaHKnq",
-    "CG-2Jktp9byvpuzNsVurReN6S9w"
+    "CG-2Jktp9byvpuzNsVurReN6S9w",
+    "CG-HXp3Hpa2FJ3pvzHsr3MC28Gn",
+    "CG-DoU2GvVr9cr5XDiqVRvmVsN6",
+    "CG-3MisueQuvysQ364rWc9xW59w"
 ]
 
 def get_simple_price(token):
