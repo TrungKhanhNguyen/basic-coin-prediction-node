@@ -20,7 +20,10 @@ api_keys = [
     "CG-2Jktp9byvpuzNsVurReN6S9w",
     "CG-HXp3Hpa2FJ3pvzHsr3MC28Gn",
     "CG-DoU2GvVr9cr5XDiqVRvmVsN6",
-    "CG-3MisueQuvysQ364rWc9xW59w"
+    "CG-3MisueQuvysQ364rWc9xW59w",
+    "CG-ti78Sdc2ixAm9sThFefiRMNx",
+    "CG-1EU1cAnJdfWCsvCWKPeyjxNS",
+    "CG-fn5Dnv5ujTE8SoQvQP5APwDu"
 ]
 
 def get_simple_price(token):
