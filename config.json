@@ -5,7 +5,7 @@
         "alloraHomeDir": "",
         "gas": "auto",
         "gasAdjustment": 5,
-        "nodeRpc": "http://localhost:26657/",
+        "nodeRpc": "https://allora-testnet-rpc.itrocket.net/",
         "maxRetries": 4,
         "delay": 5,
         "submitTx": true
