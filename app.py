@@ -15,15 +15,17 @@ def update_data():
         train_model(token)
 
 api_keys = [
-    "CG-xgs3ed4k1qVQ4Nx4zdYeeWzM",
-    "CG-9EoDDmrK2NckF2wtcJpaHKnq",
-    "CG-2Jktp9byvpuzNsVurReN6S9w",
-    "CG-HXp3Hpa2FJ3pvzHsr3MC28Gn",
-    "CG-DoU2GvVr9cr5XDiqVRvmVsN6",
-    "CG-3MisueQuvysQ364rWc9xW59w",
-    "CG-ti78Sdc2ixAm9sThFefiRMNx",
-    "CG-1EU1cAnJdfWCsvCWKPeyjxNS",
-    "CG-fn5Dnv5ujTE8SoQvQP5APwDu"
+   "CG-fn5Dnv5ujTE8SoQvQP5APwDu",
+   "CG-1EU1cAnJdfWCsvCWKPeyjxNS",
+   "CG-HXp3Hpa2FJ3pvzHsr3MC28Gn",
+   "CG-DoU2GvVr9cr5XDiqVRvmVsN6",
+   "CG-ti78Sdc2ixAm9sThFefiRMNx",
+   "CG-3MisueQuvysQ364rWc9xW59w",
+   "CG-xgs3ed4k1qVQ4Nx4zdYeeWzM",
+   "CG-9EoDDmrK2NckF2wtcJpaHKnq",
+   "CG-2Jktp9byvpuzNsVurReN6S9w",
+   "CG-Lk9W6hsBoN47nBNdpQbdpEZr",
+   "CG-JEobnGPeQ9RB1Dgq7UZHJWiP"
 ]
 
 def get_simple_price(token):
