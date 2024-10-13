@@ -14,7 +14,7 @@
         {
             "topicId": 1,
             "inferenceEntrypointName": "api-worker-reputer",
-            "loopSeconds": 5,
+            "loopSeconds": 7,
             "parameters": {
                 "InferenceEndpoint": "http://inference:8011/inference/{Token}",
                 "Token": "ETH"
@@ -23,7 +23,7 @@
         {
             "topicId": 3,
             "inferenceEntrypointName": "api-worker-reputer",
-            "loopSeconds": 5,
+            "loopSeconds": 9,
             "parameters": {
                 "InferenceEndpoint": "http://inference:8011/inference/{Token}",
                 "Token": "BTC"
@@ -32,7 +32,7 @@
         {
             "topicId": 5,
             "inferenceEntrypointName": "api-worker-reputer",
-            "loopSeconds": 5,
+            "loopSeconds": 10,
             "parameters": {
                 "InferenceEndpoint": "http://inference:8011/inference/{Token}",
                 "Token": "SOL"
