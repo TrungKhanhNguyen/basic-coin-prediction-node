@@ -1,0 +1,43 @@
+
+{
+    "wallet": {
+        "addressKeyName": "walletname",
+        "addressRestoreMnemonic": "seedphrase",
+        "alloraHomeDir": "",
+        "gas": "auto",
+        "gasAdjustment": 5,
+        "nodeRpc": "http://45.92.11.222:26657/",
+        "maxRetries": 4,
+        "delay": 5,
+        "submitTx": true
+    },
+    "worker": [
+        {
+            "topicId": 1,
+            "inferenceEntrypointName": "api-worker-reputer",
+            "loopSeconds": 5,
+            "parameters": {
+                "InferenceEndpoint": "http://inference:8011/inference/{Token}",
+                "Token": "ETH"
+            }
+        },
+        {
+            "topicId": 3,
+            "inferenceEntrypointName": "api-worker-reputer",
+            "loopSeconds": 5,
+            "parameters": {
+                "InferenceEndpoint": "http://inference:8011/inference/{Token}",
+                "Token": "BTC"
+            }
+        },
+        {
+            "topicId": 5,
+            "inferenceEntrypointName": "api-worker-reputer",
+            "loopSeconds": 5,
+            "parameters": {
+                "InferenceEndpoint": "http://inference:8011/inference/{Token}",
+                "Token": "SOL"
+            }
+        }
+    ]
+}
