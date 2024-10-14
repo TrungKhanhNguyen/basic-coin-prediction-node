@@ -20,7 +20,13 @@ services:
     container_name: allora-fetcher-1
     build:
       context: .
-      target: fetcher
+    command: >
+      sh -c "
+      while true; do
+        python fetch_data.py
+        sleep 300 # 5 minutes
+      done
+      "
     volumes:
       - ./inference-data:/app/data
       
