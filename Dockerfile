@@ -15,9 +15,3 @@ COPY . /app/
 
 # Set the entrypoint command
 CMD ["gunicorn", "--conf", "/app/gunicorn_conf.py", "main:app"]
-
-# Stage for Fetcher
-FROM base as fetcher
-
-# Command to run the fetcher script
-CMD ["bash", "start.sh"]
