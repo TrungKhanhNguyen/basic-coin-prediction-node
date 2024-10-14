@@ -4,9 +4,15 @@ import os
 
 app = Flask(__name__)
 
+app_base_path = os.getenv("APP_BASE_PATH", default=os.getcwd())
+data_base_path = os.path.join(app_base_path, "inference-data")
+
+
 @app.route('/inference/<token>', methods=['GET'])
 def get_inference(token):
-    file_path = f'/inference-data/{token}.txt'
+#    base_dir = os.path.abspath(os.path.dirname(__file__))
+ #   file_path = os.path.join(base_dir, 'inference-data', f'{token}.txt')
+    file_path = os.path.join(data_base_path, f'{token}.txt')
     if os.path.exists(file_path):
         with open(file_path, 'r') as file:
             data = file.read().strip()  # Read and strip any leading/trailing whitespace
