@@ -6,7 +6,7 @@ def download_data(token):
 
     if response.status_code == 200:
         data = response.json()
-        file_name = f'data/{token}.txt'
+        file_name = f'inference-data/{token}.txt'
         with open(file_name, 'w') as file:
             file.write(data['price'])
         print(f'Data for {token} saved to {file_name}')
