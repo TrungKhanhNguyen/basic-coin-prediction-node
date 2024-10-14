@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route('/inference/<token>', methods=['GET'])
 def get_inference(token):
-    file_path = f'data/{token}.txt'
+    file_path = f'/inference-data/{token}.txt'
     if os.path.exists(file_path):
         with open(file_path, 'r') as file:
             data = file.read().strip()  # Read and strip any leading/trailing whitespace
