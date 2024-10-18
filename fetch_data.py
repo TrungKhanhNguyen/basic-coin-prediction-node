@@ -5,6 +5,9 @@ api_keys = os.getenv("API_KEYS", "").split(",")
 app_base_path = os.getenv("APP_BASE_PATH", default=os.getcwd())
 data_base_path = os.path.join(app_base_path, "inference-data")
 def download_data(token):
+    if not api_keys or api_keys == ['']:
+        print("API keys not found! Please set them in the environment.")
+        
     base_url = "https://api.coingecko.com/api/v3/simple/price?ids="
     token_map = {
         'ETH': 'ethereum',
