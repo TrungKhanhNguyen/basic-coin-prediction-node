@@ -1,13 +1,10 @@
+
 from flask import Flask, jsonify
 import random
 import os
-
 app = Flask(__name__)
-
 app_base_path = os.getenv("APP_BASE_PATH", default=os.getcwd())
 data_base_path = os.path.join(app_base_path, "inference-data")
-
-
 @app.route('/inference/<token>', methods=['GET'])
 def get_inference(token):
 #    base_dir = os.path.abspath(os.path.dirname(__file__))
@@ -28,6 +25,5 @@ def get_inference(token):
                 return jsonify({"error": "Invalid data in file"}), 500
     else:
         return jsonify({"error": "Token data not found"}), 404
-
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8011)
+    app.run(host='0.0.0.0', port=8883)
