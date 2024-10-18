@@ -26,4 +26,4 @@ def get_inference(token):
     else:
         return jsonify({"error": "Token data not found"}), 404
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8883)
+    app.run(host='0.0.0.0', port=8011)
