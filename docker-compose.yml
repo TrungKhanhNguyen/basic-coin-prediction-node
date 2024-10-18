@@ -3,7 +3,7 @@ services:
     container_name: allora-inference-1
     build:
       context: .
-    command: python -u /app/app.py
+    command: ["gunicorn", "--conf", "/app/gunicorn_conf.py", "app:app"]
     ports:
       - "8011:8011"
     healthcheck:
