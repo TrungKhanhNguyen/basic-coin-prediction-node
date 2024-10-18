@@ -15,7 +15,7 @@ def get_inference(token):
             data = file.read().strip()  # Read and strip any leading/trailing whitespace
             try:
                 price = float(data)  # Convert string data to float
-                adjustment_factor = random.uniform(0.99, 1.01)
+                adjustment_factor = random.uniform(0.995, 1.005)
                 adjusted_price = price * adjustment_factor
                 if token == 'ARB':
                     return str(format(adjusted_price, ".4f"))
