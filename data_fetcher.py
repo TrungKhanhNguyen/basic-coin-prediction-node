@@ -22,8 +22,8 @@ def download_data_from_middle_vps(token):
 def schedule_download():
     while True:
         for token in tokens:
-            sleep(10)
             download_data_from_middle_vps(token)
+            sleep(10)
         sleep(300)  # 5 minutes
 
 if __name__ == '__main__':
