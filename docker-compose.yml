@@ -24,7 +24,7 @@ services:
       sh -c "
       while true; do
         python fetch_data.py
-        sleep 300 # 5 minutes
+        sleep 600 # 10 minutes
       done
       "
     volumes:
