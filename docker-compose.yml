@@ -1,4 +1,12 @@
 services:
+  fetcher:
+    container_name: allora-fetcher-1
+    build:
+      context: .
+      dockerfile: Dockerfile.fetcher
+    volumes:
+      - ./inference-data:/app/inference-data
+      
   inference:
     container_name: allora-inference-1
     build:
@@ -15,15 +23,6 @@ services:
       start_period: 300s
     volumes:
       - ./inference-data:/app/inference-data
-
-  fetcher:
-    container_name: allora-fetcher-1
-    build:
-      context: .
-      dockerfile: Dockerfile.fetcher
-    volumes:
-      - ./inference-data:/app/inference-data
-
   worker:
     container_name: allora-worker-1
     image: alloranetwork/allora-offchain-node:latest
