@@ -1,21 +1,35 @@
 services:
-  fetcher:
-    container_name: allora-fetcher-1
-    build:
-      context: .
-      dockerfile: Dockerfile.fetcher
-    volumes:
-      - ./inference-data:/app/inference-data
-      
   inference:
     container_name: allora-inference-1
     build:
       context: .
-      dockerfile: Dockerfile.inference
+    command: ["gunicorn", "--conf", "/app/gunicorn_conf.py", "app:app"]
     ports:
-      - "8011:8011"
+      - "1434:1434"
+    healthcheck:
+      # test: ["CMD", "curl", "-f", "http://localhost:1434/inference/ETH"]
+      test: ["CMD-SHELL", "curl -f http://localhost:8011/inference/ETH || exit 1 && curl -f http://localhost:8011/inference/BTC || exit 1 && curl -f http://localhost:8011/inference/SOL || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 300s
     volumes:
       - ./inference-data:/app/inference-data
+
+  fetcher:
+    container_name: allora-fetcher-1
+    build:
+      context: .
+    command: >
+      sh -c "
+      while true; do
+        python fetch_data.py
+        sleep 600 # 5 minutes
+      done
+      "
+    volumes:
+      - ./inference-data:/app/inference-data
+
   worker:
     container_name: allora-worker-1
     image: alloranetwork/allora-offchain-node:latest
@@ -24,7 +38,7 @@ services:
     working_dir: /data
     depends_on:
       inference:
-        condition: service_started
+        condition: service_healthy
     env_file:
       - ./worker-data/env_file
     entrypoint: ["/node/allora_offchain_node"]
