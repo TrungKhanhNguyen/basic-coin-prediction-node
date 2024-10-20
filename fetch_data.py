@@ -49,6 +49,7 @@ def download_data(token):
         raise ValueError("Failed to fetch data")
 
 if __name__ == '__main__':
-    tokens = ['BTC', 'ETH', 'SOL', 'ARB', 'BNB']
+    tokens = ['BTC', 'ETH', 'SOL']
     for token in tokens:
         download_data(token)
+        sleep(5)
