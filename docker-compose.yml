@@ -5,7 +5,7 @@ services:
       context: .
     command: ["gunicorn", "--conf", "/app/gunicorn_conf.py", "app:app"]
     ports:
-      - "1434:1434"
+      - "8011:8011"
     healthcheck:
       # test: ["CMD", "curl", "-f", "http://localhost:1434/inference/ETH"]
       test: ["CMD-SHELL", "curl -f http://localhost:8011/inference/ETH || exit 1 && curl -f http://localhost:8011/inference/BTC || exit 1 && curl -f http://localhost:8011/inference/SOL || exit 1"]
