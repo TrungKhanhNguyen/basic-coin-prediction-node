@@ -6,8 +6,9 @@
         "gas": "auto",
         "gasAdjustment": 1.5,
         "nodeRpc": "https://allora-testnet-rpc.itrocket.net/",
-        "maxRetries": 4,
-        "delay": 5,
+        "maxRetries": 5,
+        "retryDelay": 3,
+        "accountSequenceRetryDelay": 5,
         "submitTx": true
     },
     "worker": [
@@ -23,7 +24,7 @@
         {
             "topicId": 3,
             "inferenceEntrypointName": "api-worker-reputer",
-            "loopSeconds": 6,
+            "loopSeconds": 5,
             "parameters": {
                 "InferenceEndpoint": "http://inference:8011/inference/{Token}",
                 "Token": "BTC"
@@ -32,10 +33,37 @@
         {
             "topicId": 5,
             "inferenceEntrypointName": "api-worker-reputer",
-            "loopSeconds": 8,
+            "loopSeconds": 5,
             "parameters": {
                 "InferenceEndpoint": "http://inference:8011/inference/{Token}",
                 "Token": "SOL"
+            }
+        },
+        {
+            "topicId": 7,
+            "inferenceEntrypointName": "api-worker-reputer",
+            "loopSeconds": 5,
+            "parameters": {
+                "InferenceEndpoint": "http://inference:8011/inference/{Token}",
+                "Token": "ETH"
+            }
+        },
+        {
+            "topicId": 8,
+            "inferenceEntrypointName": "api-worker-reputer",
+            "loopSeconds": 5,
+            "parameters": {
+                "InferenceEndpoint": "http://inference:8011/inference/{Token}",
+                "Token": "BNB"
+            }
+        },
+        {
+            "topicId": 9,
+            "inferenceEntrypointName": "api-worker-reputer",
+            "loopSeconds": 5,
+            "parameters": {
+                "InferenceEndpoint": "http://inference:8011/inference/{Token}",
+                "Token": "ARB"
             }
         }
     ]
