@@ -7,7 +7,8 @@
         "gasAdjustment": 1.5,
         "nodeRpc": "https://allora-testnet-rpc.itrocket.net/",
         "maxRetries": 5,
-        "delay": 3,
+        "retryDelay": 3,
+        "accountSequenceRetryDelay": 5,
         "submitTx": true
     },
     "worker": [
