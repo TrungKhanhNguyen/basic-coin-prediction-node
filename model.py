@@ -2,18 +2,20 @@ import os
 import pandas as pd
 from datetime import datetime, timedelta
 import numpy as np
-from sklearn import linear_model
+#from sklearn import linear_model
 from config import data_base_path
 import random
 import requests
 import retrying
-from statsmodels.tsa.arima.model import ARIMA
+from sklearn.svm import SVR
+#from statsmodels.tsa.arima.model import ARIMA
+#from sklearn.svm import SVC
 
 forecast_price = {}
 
 binance_data_path = os.path.join(data_base_path, "binance/futures-klines")
-MAX_DATA_SIZE = 1200  # Giới hạn số lượng dữ liệu tối đa khi lưu trữ
-INITIAL_FETCH_SIZE = 800  # Số lượng nến lần đầu tải về
+MAX_DATA_SIZE = 1000  # Giới hạn số lượng dữ liệu tối đa khi lưu trữ
+INITIAL_FETCH_SIZE = 500  # Số lượng nến lần đầu tải về
 
 @retrying.retry(wait_exponential_multiplier=1000, wait_exponential_max=10000, stop_max_attempt_number=5)
 def fetch_prices(symbol, interval="1m", limit=100, start_time=None, end_time=None):
@@ -121,8 +123,16 @@ def format_data(token):
     else:
         print(f"Required columns are missing in {file_path}. Skipping this file.")
 
+def create_model():
+    model = Sequential()
+    model.add(LSTM(units=50, return_sequences=True, input_shape=(60, 1)))
+    model.add(LSTM(units=50))
+    model.add(Dense(1))
+    model.compile(optimizer='adam', loss='mean_squared_error')
+    return model
+
 def train_model(token):
-    # Load the token price data
+     # Load the token price data
     price_data = pd.read_csv(os.path.join(data_base_path, f"{token.lower()}_price_data.csv"))
     df = pd.DataFrame()
 
@@ -133,39 +143,31 @@ def train_model(token):
     price_data.set_index("date", inplace=True)
 
     # Resample the data to 10-minute frequency and compute the mean price
-    df = price_data.resample('10T').mean()
+    if token in ['ARB', 'BNB']:
+        df = price_data.resample('20T').mean()
+    else: 
+        df = price_data.resample('10T').mean()
 
     # Prepare data for Linear Regression
-    #df = df.dropna()  # Loại bỏ các giá trị NaN (nếu có)
-    #X = np.array(range(len(df))).reshape(-1, 1)  # Sử dụng chỉ số thời gian làm đặc trưng
-    #y = df['close'].values  # Sử dụng giá đóng cửa làm mục tiêu
-
-     # Initialize and train the SVR model
-    #model = SVR(kernel='rbf')
-    #model.fit(X, y)
-    #next_time_index = np.array([[len(df)]])
-    #predicted_price = model.predict(next_time_index)[0]
     df = df.dropna()  # Loại bỏ các giá trị NaN (nếu có)
+    X = np.array(range(len(df))).reshape(-1, 1)  # Sử dụng chỉ số thời gian làm đặc trưng
     y = df['close'].values  # Target: closing prices
+    
+    #model = SVR(kernel='poly', degree=3)
+    model = SVR(kernel="rbf", C=100, gamma=0.1, epsilon=0.1)
+    model.fit(X, y)
 
-    # Initialize and fit the Exponential Smoothing model
-    model = ARIMA(y,order=(1, 1, 1))
-    #model = ExponentialSmoothing(y, trend="add", seasonal=None, seasonal_periods=12)
-    model_fit = model.fit()
-
-    forecast = model_fit.forecast(steps=1)
-    predicted_price = forecast[0]
-
-    # fluctuation_range = 0.001 * predicted_price
-    # min_price = predicted_price - fluctuation_range
-    # max_price = predicted_price + fluctuation_range
-    # price_predict = random.uniform(min_price, max_price)
+    next_time_index = np.array([[len(df)]])  # Giá trị thời gian tiếp theo
+    predicted_price = model.predict(next_time_index)[0]  # Dự đoán giá
+    
+    #price_predict = predicted_price
     forecast_price[token] = predicted_price
-    #print(f"Predicted_price: {predicted_price}, Min_price: {min_price}, Max_price: {max_price}")
+        
     print(f"Forecasted price for {token}: {forecast_price[token]}")
+    
 
 def update_data():
-    tokens = ["ETH", "BTC", "SOL", "BNB", "ARB"]
+    tokens = ["ETH", "BNB", "ARB"]
     for token in tokens:
         download_data(token)
         format_data(token)
